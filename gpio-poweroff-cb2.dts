@@ -1,0 +1,35 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+
+    compatible = "rockchip,rk3566";
+
+
+    fragment@0 {
+        target = <&gpio3>;
+        __overlay__ {
+                bttrelay_gpio: bttrelay_gpio {
+                        rockchip,pins = <0 19 0 &pcfg_pull_none>; //gpio0_c3   8*('c'-'a') + 3 = 19
+                };
+
+            };
+        };
+    
+
+    fragment@1 {
+        target-path = "/leds/";
+        __overlay__ {
+                leds: leds {
+                        compatible = "gpio-leds";
+                        label = "btt_relay";
+                        pinctrl-names = "default";
+                        pinctrl-0 =<&bttrelay_gpio>;
+
+                        gpios = <&gpio0 19 0>; //gpio0_c3
+                        default_state="on";
+                        linux,default-trigger = "default-on";
+                };
+        };
+    };
+};
